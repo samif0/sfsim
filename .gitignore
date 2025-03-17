@@ -1,0 +1,20 @@
+# Build
+/build/
+*.o
+*.out
+*.exe
+
+# IDE
+.vscode/
+*.swp
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+*.a
+*.so
+*.dylib
+
+# System
+.DS_Store

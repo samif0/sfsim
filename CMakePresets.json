@@ -1,0 +1,89 @@
+{
+    "version": 3,
+    "configurePresets": [
+      {
+        "name": "default",
+        "displayName": "Default Config",
+        "description": "Default build using vcpkg",
+        "binaryDir": "${sourceDir}/build/${presetName}",
+        "generator": "Unix Makefiles",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Debug",
+          "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+          "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
+          "CMAKE_C_COMPILER": "gcc",
+          "CMAKE_CXX_COMPILER": "g++",
+          "CMAKE_CXX_FLAGS": "-Wall -Werror"
+        }
+      },
+      {
+        "name": "windows-x64",
+        "inherits": "default",
+        "displayName": "Windows x64",
+        "description": "Target Windows x64 using vcpkg",
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Windows"
+        },
+        "cacheVariables": {
+          "VCPKG_TARGET_TRIPLET": "x64-windows"
+        }
+      },
+      {
+        "name": "osx-arm64",
+        "inherits": "default",
+        "displayName": "macOS ARM64",
+        "description": "Target macOS ARM64 using vcpkg",
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Darwin"
+        },
+        "cacheVariables": {
+          "VCPKG_TARGET_TRIPLET": "arm64-osx"
+        }
+      },
+      {
+        "name": "linux-x86",
+        "inherits": "default",
+        "displayName": "Linux x86",
+        "description": "Target Linux x86 using vcpkg",
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Linux"
+        },
+        "cacheVariables": {
+          "VCPKG_TARGET_TRIPLET": "x86-linux"
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "default",
+        "configurePreset": "default",
+        "configuration": "Debug"
+      },
+      {
+        "name": "release",
+        "inherits": "default",
+        "configuration": "Release"
+      },
+      {
+        "name": "windows-x64",
+        "configurePreset": "windows-x64",
+        "configuration": "Debug"
+      },
+      {
+        "name": "osx-arm64",
+        "configurePreset": "osx-arm64",
+        "configuration": "Debug"
+      },
+      {
+        "name": "linux-x86",
+        "configurePreset": "linux-x86",
+        "configuration": "Debug"
+      }
+    ]
+  }

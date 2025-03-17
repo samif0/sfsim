@@ -1,0 +1,8 @@
+{
+    "name": "sfsim",
+    "version": "1",
+    "dependencies": [
+      "sfml"
+    ]
+  }
+  
