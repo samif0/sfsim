@@ -1,7 +1,5 @@
 #include "sim.hpp"
 #include "obj.hpp"
-#define GL_SILENCE_DEPRECATION
-#include <SFML/OpenGL.hpp>
 
 
 void sim::start(void (*prerender)(sf::RenderWindow& window), void (*render)(sf::RenderWindow& window)){
@@ -14,33 +12,25 @@ void sim::start(void (*prerender)(sf::RenderWindow& window), void (*render)(sf::
 
     prerender(window);
 
-   // run the main loop
-   bool running = true;
-   while (running)
-   {
-       // handle events
-       while (const std::optional event = window.pollEvent())
-       {
-           if (event->is<sf::Event::Closed>())
-           {
-               // end the program
-               running = false;
-           }
-           else if (const auto* resized = event->getIf<sf::Event::Resized>())
-           {
-               // adjust the viewport when the window is resized
-               glViewport(0, 0, resized->size.x, resized->size.y);
-           }
-       }
+    while (window.isOpen())
+    {
+        while (const std::optional event = window.pollEvent())
+        {
+            if (event->is<sf::Event::Closed>()) {
+                window.close();
+            } else if(const auto* key_pressed = event->getIf<sf::Event::KeyPressed>()) {
+                if(key_pressed->scancode == sf::Keyboard::Scancode::Escape) {
+                    window.close();
+                }
+            } 
+        }
 
-       // clear the buffers
-       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        window.clear(sf::Color::Black);
 
-       // draw...
+        render(window);
 
-       // end the current frame (internally swaps the front and back buffers)
-       window.display();
-   }
+        window.display();
+    }
 }
 void sim::stop(){
     
