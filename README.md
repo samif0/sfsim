@@ -19,7 +19,7 @@ Tracking certain milestones that get me closer to a good enough simuluation libr
 - Getting lldb debugger to run in VScode with a CMake/VCPKG C++ project (rest my soul...)
 
 ## M2. Create a 3D grid
-## M3. Create some of simple 3D objects (Spheres, Cones, Prisms)
+## M3. Create some simple 3D objects (Spheres, Cones, Prisms)
 ## M4. Figure out how to make 3D objects interact and collide
 ## M5. Create a simple simulation of objects interacting in a 3D grid
 ## M6. Enact graviy in a simulation and visualize the change in the 3D grid.
