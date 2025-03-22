@@ -15,6 +15,10 @@ void sim::proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm){
         out.y /= w;
         out.z /= w;
     }
+
+     // Clamp values to reasonable range
+     out.x = std::max(-2.0f, std::min(out.x, 2.0f));
+     out.y = std::max(-2.0f, std::min(out.y, 2.0f));
 }
 
 void sim::prerender(){
