@@ -12,3 +12,8 @@ Tracking certain milestones that get me closer to a good enough simuluation libr
  <p align="center">
    <img src="https://github.com/user-attachments/assets/badebe55-ff11-491e-9842-f8fedcf79563" width="25%" height="25%"/>
 </p>
+
+### Learned
+- Using matricies to transform a point in space to another point in space.
+- Efficient way to draw lines using Brasenham line algorithm.
+- Getting lldb debugger to run in VScode with a CMake/VCPKG C++ project (rest my soul...)
