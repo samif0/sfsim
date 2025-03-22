@@ -37,6 +37,7 @@ private:
     sim_config * scfg;
     sf::RenderWindow * window;
     std::vector<mesh> meshes;
+    float fTheta = 0.0f;
 
     void proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm);
 public:

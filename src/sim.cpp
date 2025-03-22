@@ -25,7 +25,7 @@ void sim::render(){
 
     mat4x4 matRotZ, matRotX;
 
-    float fTheta = 1.0f * 0.01;
+    fTheta += 1.0f * 0.01;
     
     matRotZ.mat[0][0] = cosf(fTheta);
     matRotZ.mat[0][1] = sinf(fTheta);
@@ -41,9 +41,10 @@ void sim::render(){
     matRotX.mat[2][2] = cosf(fTheta * 0.5f);
     matRotX.mat[3][3] = 1;
 
-     
+    std::cout << "Frame start, theta = " << fTheta << std::endl;
+
     for(auto& mesh : meshes) {
-        for(auto tri : mesh._mesh){
+        for(auto& tri : mesh._mesh){
             triangle out {};
             triangle tri_ztranslated {};
             triangle tri_rz {};
@@ -72,8 +73,11 @@ void sim::render(){
             
             out.scale(window->getSize());
             out.draw(*window);
+            std::cout << "Processed triangle " << &tri - &mesh._mesh[0] << std::endl;
         }
     }
+    std::cout << "Frame complete" << std::endl;
+
 }
 
 void sim::postrender(){
