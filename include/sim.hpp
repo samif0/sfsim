@@ -1,8 +1,9 @@
 #ifndef SIM_HPP
 #define SIM_HPP
 
-#include <SFML/Graphics.hpp>
 #include "mesh.hpp"
+#include "point3d.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 
@@ -37,6 +38,7 @@ private:
     sim_config * scfg;
     sf::RenderWindow * window;
     std::vector<mesh> meshes;
+    std::vector<point3d> free_points;
     float fTheta = 0.0f;
 
     void proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm);
@@ -56,9 +58,11 @@ public:
         }
     }
 
-    void init(std::vector<mesh> meshes){
+    void init(std::vector<mesh> meshes, std::vector<point3d> free_points){
         this->meshes = meshes;
+        this->free_points = free_points;
     }
+
     void prerender();
     void render();
     void postrender();

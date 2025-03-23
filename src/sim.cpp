@@ -1,6 +1,7 @@
 #include "sim.hpp"
 #include "mesh.hpp"
 #include "triangle.hpp"
+#include "point3d.hpp"
 #include <vector>
 #include <iostream>
 
@@ -80,6 +81,29 @@ void sim::render(){
             std::cout << "Processed triangle " << &tri - &mesh._mesh[0] << std::endl;
         }
     }
+
+    for(point3d point : free_points) {
+        point3d out {};
+        point3d p_ztranslated {};
+        point3d p_rz {};
+        point3d p_rzx {};
+
+
+        this->sim::proj(point.point_coords, p_rz.point_coords, matRotZ);
+
+        this->sim::proj(p_rz.point_coords, p_rzx.point_coords, matRotX);
+
+
+        p_ztranslated = p_rzx;
+
+        p_ztranslated.point_coords.z = p_rzx.point_coords.z + 3.0f;
+
+        this->sim::proj(p_ztranslated.point_coords, out.point_coords, this->scfg->proj_mat);
+ 
+        out.scale(window->getSize());
+        out.draw(*window);
+    }
+
     std::cout << "Frame complete" << std::endl;
 
 }
@@ -87,7 +111,6 @@ void sim::render(){
 void sim::postrender(){
 
 }
-
 
 void sim::start(){
     while (window->isOpen())

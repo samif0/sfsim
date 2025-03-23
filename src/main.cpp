@@ -1,13 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <sim.hpp>
 #include <mesh.hpp>
+#include <point3d.hpp>
 #include <triangle.hpp>
 #include <iostream>
 
 
 int main()
 {
-    sim_config cfg {sf::String("sfsim"), 600, 800};
+    sim_config cfg {sf::String("sfsim"), 1920, 1080};
     sim s {&cfg};
     triangle st0(
         {sf::Vector3f(0.0f, 0.0f, 0.0f), sf::Vector3f(0.0f, 1.0f, 0.0f), sf::Vector3f(1.0f, 1.0f, 0.0f)}
@@ -61,8 +62,19 @@ int main()
     };
 
     mesh cube_mesh(cube);
-    std::vector<mesh> meshes {cube_mesh};
 
-    s.init(meshes);
+    point3d p0(sf::Vector3f{0, 0, 0});
+    point3d p1(sf::Vector3f{0, 1, 0});
+    point3d p2(sf::Vector3f{0, 0, 1});
+    point3d p3(sf::Vector3f{0, 1, 1});
+    point3d p4(sf::Vector3f{1, 0, 0});
+    point3d p5(sf::Vector3f{1, 0, 1});
+    point3d p6(sf::Vector3f{1, 1, 0});
+    point3d p7(sf::Vector3f{1, 1, 1});
+
+    std::vector<mesh> meshes {cube_mesh};
+    std::vector<point3d> free_points {p0, p1, p2, p3, p4, p5, p6, p7};
+
+    s.init(meshes, free_points);
     s.start();
 }

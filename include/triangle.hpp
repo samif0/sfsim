@@ -86,7 +86,6 @@ public:
     }
 
     void scale(sf::Vector2u window_dims){
-        // First normalize to [-1,1] range
         vertices[0].x += 1.0f; vertices[0].y += 1.0f;
         vertices[1].x += 1.0f; vertices[1].y += 1.0f;
         vertices[2].x += 1.0f; vertices[2].y += 1.0f;
