@@ -20,8 +20,6 @@ public:
         _vertices.clear();
         _edges.clear();
 
-        // First create all vertices
-        // Store vertices in a 3D array for easier access
         std::vector<std::vector<std::vector<int>>> vertex_indices(width + 1,
             std::vector<std::vector<int>>(height + 1,
                 std::vector<int>(depth + 1, -1)));
@@ -40,7 +38,6 @@ public:
             }
         }
 
-        // Create edges only between adjacent vertices
         // X-axis edges
         for (int x = 0; x < width; x++) {
             for (int y = 0; y <= height; y++) {
@@ -76,40 +73,9 @@ public:
     }
 
     void draw(sf::RenderWindow& window) const override {
-        // Draw all edges
-        for (const auto& edge : _edges) {
-            edge.draw(window);
-        }
-        
-        // Draw all triangles if needed
-        for (const auto& tri : _triangles) {
-            tri.draw(window);
-        }
-        
-        // Draw all triangles in mesh if needed
-        for (const auto& tri : _mesh) {
-            tri.draw(window);
-        }
     }
     
     void scale(sf::Vector2u windowSize) override {
-        // Scale vertices first
-        for (auto& vertex : _vertices) {
-            vertex.scale(windowSize);
-        }
-        
-        // No need to scale edges as they reference vertices
-        // that we already scaled above
-        
-        // Scale triangles if needed
-        for (auto& tri : _triangles) {
-            tri.scale(windowSize);
-        }
-        
-        // Scale triangles in mesh if needed
-        for (auto& tri : _mesh) {
-            tri.scale(windowSize);
-        }
     }
 
     std::vector<triangle>& get_mesh() {
