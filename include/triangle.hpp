@@ -2,10 +2,11 @@
 #define TRIANGLE_HPP
 
 #include <SFML/Graphics.hpp>
+#include "drawable.hpp"
 
-class triangle {
+class triangle : public drawable { 
 private:
-    void draw_pixel(sf::RenderWindow& window, float x, float y, sf::Color color = sf::Color::Black) {
+    void draw_pixel(sf::RenderWindow& window, float x, float y, sf::Color color = sf::Color::Black) const {
         sf::RectangleShape pixel(sf::Vector2f(1, 1));
         pixel.setPosition({x, y});
         pixel.setFillColor(color);
@@ -13,7 +14,7 @@ private:
     }
 
     // Bresenham line algorithm
-    void draw_line(sf::RenderWindow& window, float x1, float y1, float x2, float y2, sf::Color color = sf::Color::Black) {
+    void draw_line(sf::RenderWindow& window, float x1, float y1, float x2, float y2, sf::Color color = sf::Color::Black) const {
         float x, y, dx, dy, dx1, dy1, px, py, xe, ye;
         [[maybe_unused]] int i;
         dx = x2 - x1; 
@@ -73,7 +74,7 @@ private:
     }
 
     void draw_triangle(sf::RenderWindow& window, float x1, float y1, float x2, float y2, float x3, float y3, 
-                    sf::Color color = sf::Color::Black) {
+                    sf::Color color = sf::Color::Black) const {
         draw_line(window, x1, y1, x2, y2, color);
         draw_line(window, x2, y2, x3, y3, color);
         draw_line(window, x3, y3, x1, y1, color);
@@ -81,11 +82,11 @@ private:
 public:  
     std::vector<sf::Vector3f> vertices;
 
-    void draw(sf::RenderWindow& window){
+    void draw(sf::RenderWindow& window) const override {
         draw_triangle(window, vertices[0].x, vertices[0].y, vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y);
     }
 
-    void scale(sf::Vector2u window_dims){
+    void scale(sf::Vector2u window_dims) override {
         vertices[0].x += 1.0f; vertices[0].y += 1.0f;
         vertices[1].x += 1.0f; vertices[1].y += 1.0f;
         vertices[2].x += 1.0f; vertices[2].y += 1.0f;

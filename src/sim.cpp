@@ -17,7 +17,6 @@ void sim::proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm){
         out.z /= w;
     }
 
-     // Clamp values to reasonable range
      out.x = std::max(-2.0f, std::min(out.x, 2.0f));
      out.y = std::max(-2.0f, std::min(out.y, 2.0f));
 }
@@ -46,10 +45,9 @@ void sim::render(){
     matRotX.mat[2][2] = cosf(fTheta * 0.5f);
     matRotX.mat[3][3] = 1;
 
-    std::cout << "Frame start, theta = " << fTheta << std::endl;
 
     for(auto& mesh : meshes) {
-        for(auto& tri : mesh._mesh){
+        for(auto& tri : mesh.get_mesh()){
             triangle out {};
             triangle tri_ztranslated {};
             triangle tri_rz {};
@@ -67,9 +65,9 @@ void sim::render(){
 
             tri_ztranslated = tri_rzx;
 
-            tri_ztranslated.vertices[0].z = tri_rzx.vertices[0].z + 3.0f;
-            tri_ztranslated.vertices[1].z = tri_rzx.vertices[1].z + 3.0f;
-            tri_ztranslated.vertices[2].z = tri_rzx.vertices[2].z + 3.0f;
+            tri_ztranslated.vertices[0].z = tri_rzx.vertices[0].z + 10.0f;
+            tri_ztranslated.vertices[1].z = tri_rzx.vertices[1].z + 10.0f;
+            tri_ztranslated.vertices[2].z = tri_rzx.vertices[2].z + 10.0f;
 
             this->sim::proj(tri_ztranslated.vertices[0], out.vertices[0], this->scfg->proj_mat);
             this->sim::proj(tri_ztranslated.vertices[1], out.vertices[1], this->scfg->proj_mat);
@@ -78,8 +76,68 @@ void sim::render(){
             
             out.scale(window->getSize());
             out.draw(*window);
-            std::cout << "Processed triangle " << &tri - &mesh._mesh[0] << std::endl;
         }
+
+        /*
+        for(point3d point : mesh.get_vertices()) {
+            point3d out {};
+            point3d p_ztranslated {};
+            point3d p_rz {};
+            point3d p_rzx {};
+
+
+            this->sim::proj(point.point_coords, p_rz.point_coords, matRotZ);
+
+            this->sim::proj(p_rz.point_coords, p_rzx.point_coords, matRotX);
+
+
+            p_ztranslated = p_rzx;
+
+            p_ztranslated.point_coords.z = p_rzx.point_coords.z + 3.0f;
+
+            this->sim::proj(p_ztranslated.point_coords, out.point_coords, this->scfg->proj_mat);
+    
+            out.scale(window->getSize());
+            out.draw(*window);
+        }
+        */
+
+        for(line3d line : mesh.get_edges()) {
+            // Create temporary line objects with new point3d objects
+            point3d start1 = point3d();
+            point3d end1 = point3d();
+            line3d l_rz = line3d(&start1, &end1);
+            
+            point3d start2 = point3d();
+            point3d end2 = point3d();
+            line3d l_rzx = line3d(&start2, &end2);
+            
+            point3d start3 = point3d();
+            point3d end3 = point3d();
+            line3d l_ztranslated = line3d(&start3, &end3);
+            
+            point3d start4 = point3d();
+            point3d end4 = point3d();
+            line3d out = line3d(&start4, &end4);
+
+            /*
+            this->sim::proj(line.get_p1()->point_coords, l_rz.get_p1()->point_coords, matRotZ);
+            this->sim::proj(line.get_p2()->point_coords, l_rz.get_p2()->point_coords, matRotZ);  
+            */
+            this->sim::proj(line.get_p1()->point_coords, l_rzx.get_p1()->point_coords, matRotZ);
+            this->sim::proj(line.get_p2()->point_coords, l_rzx.get_p2()->point_coords, matRotZ);
+            
+            l_ztranslated = l_rzx;
+            l_ztranslated.get_p1()->point_coords.z = l_rzx.get_p1()->point_coords.z + 10.0f;
+            l_ztranslated.get_p2()->point_coords.z = l_rzx.get_p2()->point_coords.z + 10.0f;
+
+            this->sim::proj(l_ztranslated.get_p1()->point_coords, out.get_p1()->point_coords, this->scfg->proj_mat);
+            this->sim::proj(l_ztranslated.get_p2()->point_coords, out.get_p2()->point_coords, this->scfg->proj_mat);
+            
+            out.scale(window->getSize());
+            out.draw(*window);
+        }
+
     }
 
     for(point3d point : free_points) {
@@ -103,9 +161,6 @@ void sim::render(){
         out.scale(window->getSize());
         out.draw(*window);
     }
-
-    std::cout << "Frame complete" << std::endl;
-
 }
 
 void sim::postrender(){

@@ -58,7 +58,7 @@ public:
         }
     }
 
-    void init(std::vector<mesh> meshes, std::vector<point3d> free_points){
+    void init(std::vector<mesh>& meshes, std::vector<point3d>& free_points){
         this->meshes = meshes;
         this->free_points = free_points;
     }
