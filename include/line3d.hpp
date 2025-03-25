@@ -10,7 +10,9 @@ private:
     point3d* _p2;
     
 public:
-    line3d(point3d* p1, point3d* p2) : _p1(p1), _p2(p2) {}
+    line3d(point3d* p1, point3d* p2) : _p1(p1), _p2(p2) {
+
+    }
     
     ~line3d() {}
     

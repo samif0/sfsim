@@ -74,9 +74,20 @@ int main()
 
 
     mesh g {};
-    g.to_grid(10, 10, 10, 1);
+    mesh g2 {};
+    mesh g3 {};
+    mesh g4 {};
+    mesh g5 {};
+    mesh g6 {};
 
-    std::vector<mesh> meshes {g};
+    g.to_grid(1, 1, 1, 0.1);
+    g2.to_grid(3, 3, 3, 0.3);
+    g3.to_grid(5, 5, 5, 0.5);
+    g4.to_grid(7, 7, 7, 0.7);
+    g5.to_grid(11, 11, 11, 1.1);
+    g6.to_grid(13, 13, 13, 1.3);
+
+    std::vector<mesh> meshes {g, g2, g3, g4, g5, g6};
     std::vector<point3d> free_points {p0, p1, p2, p3, p4, p5, p6, p7};
 
     s.init(meshes, free_points);

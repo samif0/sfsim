@@ -16,9 +16,6 @@ void sim::proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm){
         out.y /= w;
         out.z /= w;
     }
-
-     out.x = std::max(-2.0f, std::min(out.x, 2.0f));
-     out.y = std::max(-2.0f, std::min(out.y, 2.0f));
 }
 
 void sim::prerender(){
@@ -78,12 +75,12 @@ void sim::render(){
             out.draw(*window);
         }
 
-        /*
+        
         for(point3d point : mesh.get_vertices()) {
-            point3d out {};
-            point3d p_ztranslated {};
-            point3d p_rz {};
-            point3d p_rzx {};
+            point3d out = point;
+            point3d p_ztranslated = point;
+            point3d p_rz = point;
+            point3d p_rzx = point;
 
 
             this->sim::proj(point.point_coords, p_rz.point_coords, matRotZ);
@@ -93,17 +90,16 @@ void sim::render(){
 
             p_ztranslated = p_rzx;
 
-            p_ztranslated.point_coords.z = p_rzx.point_coords.z + 3.0f;
+            p_ztranslated.point_coords.z = p_rzx.point_coords.z + 10.0f;
 
             this->sim::proj(p_ztranslated.point_coords, out.point_coords, this->scfg->proj_mat);
     
             out.scale(window->getSize());
             out.draw(*window);
         }
-        */
+        
 
         for(line3d line : mesh.get_edges()) {
-            // Create temporary line objects with new point3d objects
             point3d start1 = point3d();
             point3d end1 = point3d();
             line3d l_rz = line3d(&start1, &end1);
@@ -120,12 +116,10 @@ void sim::render(){
             point3d end4 = point3d();
             line3d out = line3d(&start4, &end4);
 
-            /*
             this->sim::proj(line.get_p1()->point_coords, l_rz.get_p1()->point_coords, matRotZ);
             this->sim::proj(line.get_p2()->point_coords, l_rz.get_p2()->point_coords, matRotZ);  
-            */
-            this->sim::proj(line.get_p1()->point_coords, l_rzx.get_p1()->point_coords, matRotZ);
-            this->sim::proj(line.get_p2()->point_coords, l_rzx.get_p2()->point_coords, matRotZ);
+            this->sim::proj(l_rz.get_p1()->point_coords, l_rzx.get_p1()->point_coords, matRotX);
+            this->sim::proj(l_rz.get_p2()->point_coords, l_rzx.get_p2()->point_coords, matRotX);
             
             l_ztranslated = l_rzx;
             l_ztranslated.get_p1()->point_coords.z = l_rzx.get_p1()->point_coords.z + 10.0f;
