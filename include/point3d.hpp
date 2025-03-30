@@ -8,6 +8,7 @@ class point3d : public drawable {
 private:
     sf::Color clr; 
     bool clr_set;
+    bool visible;
 
     void draw_pixel(sf::RenderWindow& window, sf::Color color = sf::Color::Red) const {
         sf::RectangleShape pixel(sf::Vector2f(2, 2));
@@ -41,9 +42,11 @@ public:
     }    
 
     void set_color(sf::Color clr){ this->clr = clr; clr_set = true; }
-    point3d() :  clr_set(false), point_coords({0, 0, 0}) {}
-    point3d(float x, float y, float z) : clr_set(false), point_coords({x, y, z}) {}
-    point3d(sf::Vector3f _point_coords) : clr_set(false), point_coords(_point_coords) {}
+    void set_visible(bool vis){ this->visible = vis;}
+    bool is_visible(){ return this->visible; }
+    point3d() :  clr_set(false), visible(true), point_coords({0, 0, 0}) {}
+    point3d(float x, float y, float z) : clr_set(false), visible(true), point_coords({x, y, z}) {}
+    point3d(sf::Vector3f _point_coords) : clr_set(false), visible(true), point_coords(_point_coords) {}
     ~point3d(){}
     
     point3d& operator=(const point3d& other) {

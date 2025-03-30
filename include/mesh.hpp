@@ -17,7 +17,7 @@ private:
 
 public:
 
-    void to_grid(int width, int height, int depth, float cell_size) {
+    void to_grid(int width, int height, int depth, float cell_size, bool show_points) {
         _vertices.clear();
         _edges.clear();
 
@@ -42,6 +42,7 @@ public:
 
                     point3d p(px, py, pz);
                     p.set_color(c);
+                    p.set_visible(show_points);
                     _vertices.push_back(p);
 
                     vertex_indices[x][y][z] = vertex_index++;

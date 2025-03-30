@@ -6,6 +6,8 @@
 
 class triangle : public drawable { 
 private:
+    float depth;
+
     void draw_pixel(sf::RenderWindow& window, float x, float y, sf::Color color = sf::Color::Black) const {
         sf::RectangleShape pixel(sf::Vector2f(1, 1));
         pixel.setPosition({x, y});
@@ -79,6 +81,7 @@ private:
         draw_line(window, x2, y2, x3, y3, color);
         draw_line(window, x3, y3, x1, y1, color);
     }
+
 public:  
     std::vector<sf::Vector3f> vertices;
 
@@ -101,9 +104,23 @@ public:
         }
     }
 
+    float get_depth() const { return this->depth; }
+    void set_depth(float n_depth) { this->depth = n_depth; }
+    void set_depth() { 
+        float sum_z = 0;
+        for(auto& vert : this->vertices){
+            sum_z += vert.z;
+        }
+
+        this->depth = sum_z / this->vertices.size(); 
+    }
     triangle(): vertices({ {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}} ) {}
     triangle(std::vector<sf::Vector3f> _vertices) : vertices(_vertices) {};
     ~triangle(){};
+
+    bool operator<(const triangle& other) const {
+        return this->get_depth() < other.get_depth();
+    }
 };
 
 #endif

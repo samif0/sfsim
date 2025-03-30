@@ -42,8 +42,9 @@ void sim::render(){
     matRotX.mat[2][2] = cosf(fTheta * 0.5f);
     matRotX.mat[3][3] = 1;
 
-
     for(auto& mesh : meshes) {
+        std::priority_queue<triangle> triangles_rasterized;
+
         for(auto& tri : mesh.get_mesh()){
             triangle out {};
             triangle tri_ztranslated {};
@@ -70,13 +71,51 @@ void sim::render(){
             this->sim::proj(tri_ztranslated.vertices[1], out.vertices[1], this->scfg->proj_mat);
             this->sim::proj(tri_ztranslated.vertices[2], out.vertices[2], this->scfg->proj_mat);
 
-            
-            out.scale(window->getSize());
-            out.draw(*window);
-        }
 
+
+            sf::Vector3f normal, line1, line2;
+
+            line1.x = out.vertices[1].x - out.vertices[0].x;
+            line1.y = out.vertices[1].y - out.vertices[0].y;
+            line1.z = out.vertices[1].z - out.vertices[0].z;
+
+            line2.x = out.vertices[2].x - out.vertices[0].x;
+            line2.y = out.vertices[2].y - out.vertices[0].y;
+            line2.z = out.vertices[2].z - out.vertices[0].z;
+
+            normal.x = line1.y * line2.z - line1.z * line2.y;
+            normal.y = line1.z * line2.x - line1.x * line2.z;
+            normal.z = line1.x * line2.y - line1.y * line2.x;
+
+            float norm_normal = sqrtf(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+            normal.x /= norm_normal;
+            normal.y /= norm_normal;
+            normal.z /= norm_normal;
+
+            sf::Vector3f camera {0, 0, 0};
+
+            float simil = normal.x * (out.vertices[0].x - camera.x) + 
+                          normal.y * (out.vertices[0].y - camera.y) + 
+                          normal.z * (out.vertices[0].z - camera.z);
+ 
+ 
+            if(simil < 0){
+                out.set_depth();
+                triangles_rasterized.push(out);
+            }
+        }
+ 
+
+        while(!triangles_rasterized.empty()){
+            triangle tmp = triangles_rasterized.top();
+            tmp.scale(window->getSize());
+            tmp.draw(*window);
+            triangles_rasterized.pop();
+        }
         
         for(point3d point : mesh.get_vertices()) {
+            if(!point.is_visible()) continue;
+
             point3d out = point;
             point3d p_ztranslated = point;
             point3d p_rz = point;
@@ -84,7 +123,6 @@ void sim::render(){
 
 
             this->sim::proj(point.point_coords, p_rz.point_coords, matRotZ);
-
             this->sim::proj(p_rz.point_coords, p_rzx.point_coords, matRotX);
 
 
