@@ -3,6 +3,7 @@
 #include "triangle.hpp"
 #include "point3d.hpp"
 #include <vector>
+#include <queue>
 #include <iostream>
 
 void sim::proj(sf::Vector3f &in, sf::Vector3f &out, mat4x4 &pm){
