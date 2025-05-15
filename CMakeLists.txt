@@ -43,5 +43,7 @@ add_executable(sfsim ${SOURCES})
 
 add_compile_options(-Wall -Werror)
 
-find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG REQUIRED)
+if(NOT TARGET SFML::Graphics)
+  find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG REQUIRED)
+endif()
 target_link_libraries(sfsim PRIVATE SFML::Network SFML::Graphics SFML::Window SFML::Audio SFML::System)

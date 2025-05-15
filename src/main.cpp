@@ -74,9 +74,9 @@ int main()
 
 
     mesh g {};
-    g.to_grid(5, 5, 1, 0.1, false);
+    g.to_grid(5, 5, 5, 1, true);
 
-    std::vector<mesh> meshes {cube};
+    std::vector<mesh> meshes {g};
     std::vector<point3d> free_points {p0, p1, p2, p3, p4, p5, p6, p7};
     std::vector<point3d> free_points2 {};
 
