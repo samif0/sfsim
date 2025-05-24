@@ -5,6 +5,11 @@ namespace SimpleExamples {
     void runExample(int choice);
 }
 
+namespace Examples {
+    void run_example(int example_number);
+}
+
+
 int main() {
     std::cout << "SFSim - Select an example to run:" << std::endl;
     std::cout << "1. DNA Helix (rotating double helix structure)" << std::endl;

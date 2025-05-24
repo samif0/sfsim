@@ -121,19 +121,19 @@ Matrix4x4 Renderer::getViewProjectionMatrix() const {
     if (_camera) {
         return _camera->getViewProjectionMatrix();
     }
-    return Matrix4x4::identity();
+    return Matrix4x4::createIdentity();
 }
 
 void Renderer::drawDebugLine(const Vector3f& start, const Vector3f& end, const sf::Color& color) {
     auto line = std::make_unique<LineGeometry>(start, end, color);
-    submitImmediate(line.get(), Matrix4x4::identity());
+    submitImmediate(line.get(), Matrix4x4::createIdentity());
     _debugGeometry.push_back(std::move(line));
 }
 
 void Renderer::drawDebugPoint(const Vector3f& position, const sf::Color& color, float size) {
     auto point = std::make_unique<PointGeometry>(position, color);
     point->setSize(size);
-    submitImmediate(point.get(), Matrix4x4::identity());
+    submitImmediate(point.get(), Matrix4x4::createIdentity());
     _debugGeometry.push_back(std::move(point));
 }
 

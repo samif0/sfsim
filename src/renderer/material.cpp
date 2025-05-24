@@ -1,6 +1,7 @@
 #include "renderer/material.hpp"
 #include <cmath>
 #include <algorithm>
+#include <cstdint>
 
 namespace SFSim {
 
@@ -18,10 +19,10 @@ Material::Material(MaterialType type)
 sf::Color Material::calculateColor(const Vector3f& position, const Vector3f& normal, const Vector3f& lightDir) const {
     float NdotL = std::max(0.0f, normal.dot(lightDir));
     
-    sf::Uint8 r = static_cast<sf::Uint8>(_diffuseColor.r * NdotL + _emissiveColor.r);
-    sf::Uint8 g = static_cast<sf::Uint8>(_diffuseColor.g * NdotL + _emissiveColor.g);
-    sf::Uint8 b = static_cast<sf::Uint8>(_diffuseColor.b * NdotL + _emissiveColor.b);
-    sf::Uint8 a = static_cast<sf::Uint8>(_diffuseColor.a * _opacity);
+    std::uint8_t r = static_cast<std::uint8_t>(_diffuseColor.r * NdotL + _emissiveColor.r);
+    std::uint8_t g = static_cast<std::uint8_t>(_diffuseColor.g * NdotL + _emissiveColor.g);
+    std::uint8_t b = static_cast<std::uint8_t>(_diffuseColor.b * NdotL + _emissiveColor.b);
+    std::uint8_t a = static_cast<std::uint8_t>(_diffuseColor.a * _opacity);
     
     return sf::Color(r, g, b, a);
 }
@@ -46,25 +47,25 @@ sf::Color PhongMaterial::calculateColor(const Vector3f& position, const Vector3f
     float diffuseStrength = NdotL;
     float specularStrength = specular;
     
-    sf::Uint8 r = static_cast<sf::Uint8>(std::min(255.0f,
+    std::uint8_t r = static_cast<std::uint8_t>(std::min(255.0f,
         _ambientColor.r * ambientStrength +
         _diffuseColor.r * diffuseStrength +
         _specularColor.r * specularStrength +
         _emissiveColor.r));
     
-    sf::Uint8 g = static_cast<sf::Uint8>(std::min(255.0f,
+    std::uint8_t g = static_cast<std::uint8_t>(std::min(255.0f,
         _ambientColor.g * ambientStrength +
         _diffuseColor.g * diffuseStrength +
         _specularColor.g * specularStrength +
         _emissiveColor.g));
     
-    sf::Uint8 b = static_cast<sf::Uint8>(std::min(255.0f,
+    std::uint8_t b = static_cast<std::uint8_t>(std::min(255.0f,
         _ambientColor.b * ambientStrength +
         _diffuseColor.b * diffuseStrength +
         _specularColor.b * specularStrength +
         _emissiveColor.b));
     
-    sf::Uint8 a = static_cast<sf::Uint8>(_diffuseColor.a * _opacity);
+    std::uint8_t a = static_cast<std::uint8_t>(_diffuseColor.a * _opacity);
     
     return sf::Color(r, g, b, a);
 }
@@ -102,12 +103,13 @@ sf::Color PBRMaterial::calculateColor(const Vector3f& position, const Vector3f& 
     kD = kD * (1.0f - _metallic);
     
     Vector3f diffuse = albedo / M_PI;
-    Vector3f color = (kD * diffuse + specular) * NdotL;
+    Vector3f kD_diffuse(kD.x * diffuse.x, kD.y * diffuse.y, kD.z * diffuse.z);
+    Vector3f color = (kD_diffuse + specular) * NdotL;
     
-    sf::Uint8 r = static_cast<sf::Uint8>(std::min(255.0f, color.x * 255.0f + _emissiveColor.r));
-    sf::Uint8 g = static_cast<sf::Uint8>(std::min(255.0f, color.y * 255.0f + _emissiveColor.g));
-    sf::Uint8 b = static_cast<sf::Uint8>(std::min(255.0f, color.z * 255.0f + _emissiveColor.b));
-    sf::Uint8 a = static_cast<sf::Uint8>(_diffuseColor.a * _opacity);
+    std::uint8_t r = static_cast<std::uint8_t>(std::min(255.0f, color.x * 255.0f + _emissiveColor.r));
+    std::uint8_t g = static_cast<std::uint8_t>(std::min(255.0f, color.y * 255.0f + _emissiveColor.g));
+    std::uint8_t b = static_cast<std::uint8_t>(std::min(255.0f, color.z * 255.0f + _emissiveColor.b));
+    std::uint8_t a = static_cast<std::uint8_t>(_diffuseColor.a * _opacity);
     
     return sf::Color(r, g, b, a);
 }

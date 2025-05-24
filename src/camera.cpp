@@ -9,6 +9,8 @@ Camera::Camera()
     : _position(0, 0, 5),
       _target(0, 0, 0),
       _up(0, 1, 0),
+      _rotation(0, 0, 0),
+      _mouseSensitivity(0.002f),
       _viewMatrixDirty(true),
       _isPerspective(true),
       _fovY(M_PI / 4),
@@ -26,6 +28,8 @@ Camera::Camera(const Vector3f& position, const Vector3f& target, const Vector3f&
     : _position(position),
       _target(target),
       _up(up),
+      _rotation(0, 0, 0),
+      _mouseSensitivity(0.002f),
       _viewMatrixDirty(true),
       _isPerspective(true),
       _fovY(M_PI / 4),
@@ -144,6 +148,45 @@ void Camera::moveUp(float distance) {
     _viewMatrixDirty = true;
 }
 
+void Camera::rotate(float deltaX, float deltaY, float deltaZ) {
+    _rotation.x += deltaX;
+    _rotation.y += deltaY;
+    _rotation.z += deltaZ;
+    _viewMatrixDirty = true;
+}
+
+void Camera::rotateX(float deltaAngle) {
+    _rotation.x += deltaAngle;
+    _viewMatrixDirty = true;
+}
+
+void Camera::rotateY(float deltaAngle) {
+    _rotation.y += deltaAngle;
+    _viewMatrixDirty = true;
+}
+
+void Camera::rotateZ(float deltaAngle) {
+    _rotation.z += deltaAngle;
+    _viewMatrixDirty = true;
+}
+
+void Camera::setRotation(const Vector3f& rotation) {
+    _rotation = rotation;
+    _viewMatrixDirty = true;
+}
+
+void Camera::rotateWithMouse(float mouseDeltaX, float mouseDeltaY, float sensitivity) {
+    float deltaYaw = -mouseDeltaX * sensitivity;
+    float deltaPitch = -mouseDeltaY * sensitivity;
+    
+    _rotation.y += deltaYaw;
+    _rotation.x += deltaPitch;
+    
+    _rotation.x = std::fmax(-M_PI_2 + 0.1f, std::fmin(M_PI_2 - 0.1f, _rotation.x));
+    
+    _viewMatrixDirty = true;
+}
+
 const Matrix4x4& Camera::getViewMatrix() const {
     if (_viewMatrixDirty) {
         updateViewMatrix();
@@ -169,7 +212,19 @@ void Camera::updateMatrices() {
 }
 
 void Camera::updateViewMatrix() const {
-    _viewMatrix = Matrix4x4::lookAt(_position, _target, _up);
+    Matrix4x4 rotationMatrix = Matrix4x4::rotationY(_rotation.y) * 
+                               Matrix4x4::rotationX(_rotation.x) * 
+                               Matrix4x4::rotationZ(_rotation.z);
+    
+    Vector3f forward(0, 0, -1);
+    Vector3f up(0, 1, 0);
+    
+    Vector3f rotatedForward = rotationMatrix.transformDirection(forward);
+    Vector3f rotatedUp = rotationMatrix.transformDirection(up);
+    
+    Vector3f newTarget = _position + rotatedForward;
+    
+    _viewMatrix = Matrix4x4::lookAt(_position, newTarget, rotatedUp);
     _viewMatrixDirty = false;
 }
 

@@ -45,15 +45,17 @@ protected:
     
     void drawLine(sf::RenderWindow& window, const Vector2f& start, const Vector2f& end, const sf::Color& color) const {
         sf::Vertex line[2];
-        line[0] = sf::Vertex(sf::Vector2f(start.x, start.y), color);
-        line[1] = sf::Vertex(sf::Vector2f(end.x, end.y), color);
-        window.draw(line, 2, sf::Lines);
+        line[0].position = sf::Vector2f(start.x, start.y);
+        line[0].color = color;
+        line[1].position = sf::Vector2f(end.x, end.y);
+        line[1].color = color;
+        window.draw(line, 2, sf::PrimitiveType::Lines);
     }
     
     void drawPoint(sf::RenderWindow& window, const Vector2f& position, const sf::Color& color, float size = 3.0f) const {
         sf::CircleShape point(size);
         point.setFillColor(color);
-        point.setPosition(position.x - size, position.y - size);
+        point.setPosition(sf::Vector2f(position.x - size, position.y - size));
         window.draw(point);
     }
 };

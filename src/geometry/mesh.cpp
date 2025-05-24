@@ -206,10 +206,13 @@ void MeshGeometry::drawTriangle(sf::RenderWindow& window, const Vertex& a, const
     }
     
     sf::Vertex triangle[3];
-    triangle[0] = sf::Vertex(sf::Vector2f(screenA.x, screenA.y), color);
-    triangle[1] = sf::Vertex(sf::Vector2f(screenB.x, screenB.y), color);
-    triangle[2] = sf::Vertex(sf::Vector2f(screenC.x, screenC.y), color);
-    window.draw(triangle, 3, sf::Triangles);
+    triangle[0].position = sf::Vector2f(screenA.x, screenA.y);
+    triangle[0].color = color;
+    triangle[1].position = sf::Vector2f(screenB.x, screenB.y);
+    triangle[1].color = color;
+    triangle[2].position = sf::Vector2f(screenC.x, screenC.y);
+    triangle[2].color = color;
+    window.draw(triangle, 3, sf::PrimitiveType::Triangles);
 }
 
 std::unique_ptr<MeshGeometry> MeshGeometry::createCube(float size) {

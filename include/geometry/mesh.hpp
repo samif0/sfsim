@@ -28,7 +28,7 @@ public:
     void setIndices(const std::vector<unsigned int>& indices);
     void setMaterial(std::shared_ptr<Material> material);
     
-    const std::vector<Vertex>& getVertices() const { return _vertices; }
+    const std::vector<Vertex>& getMeshVertices() const { return _vertices; }
     const std::vector<unsigned int>& getIndices() const { return _indices; }
     std::shared_ptr<Material> getMaterial() const { return _material; }
     

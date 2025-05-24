@@ -41,6 +41,16 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 set(SOURCES 
     ${PROJECT_SOURCE_DIR}/src/main.cpp
     ${PROJECT_SOURCE_DIR}/src/simple_examples.cpp
+    ${PROJECT_SOURCE_DIR}/src/examples.cpp
+    ${PROJECT_SOURCE_DIR}/src/sim.cpp
+    ${PROJECT_SOURCE_DIR}/src/camera.cpp
+    ${PROJECT_SOURCE_DIR}/src/transform.cpp
+    ${PROJECT_SOURCE_DIR}/src/core/time.cpp
+    ${PROJECT_SOURCE_DIR}/src/renderer/material.cpp
+    ${PROJECT_SOURCE_DIR}/src/ecs/entity.cpp
+    ${PROJECT_SOURCE_DIR}/src/ecs/transform_component.cpp
+    ${PROJECT_SOURCE_DIR}/src/ecs/render_component.cpp
+    ${PROJECT_SOURCE_DIR}/src/geometry/mesh.cpp
 )
 
 add_executable(sfsim ${SOURCES})

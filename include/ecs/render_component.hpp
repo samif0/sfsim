@@ -12,6 +12,8 @@ public:
     RenderComponent();
     RenderComponent(std::unique_ptr<Geometry> geometry);
     
+    ComponentType getComponentType() const override { return ComponentType::Render; }
+    
     void setGeometry(std::unique_ptr<Geometry> geometry);
     Geometry* getGeometry() const { return _geometry.get(); }
     

@@ -35,6 +35,17 @@ public:
     void moveRight(float distance);
     void moveUp(float distance);
     
+    void rotate(float deltaX, float deltaY, float deltaZ);
+    void rotateX(float deltaAngle);
+    void rotateY(float deltaAngle);
+    void rotateZ(float deltaAngle);
+    void setRotation(const Vector3f& rotation);
+    const Vector3f& getRotation() const { return _rotation; }
+    
+    void rotateWithMouse(float mouseDeltaX, float mouseDeltaY, float sensitivity = 0.002f);
+    void setMouseSensitivity(float sensitivity) { _mouseSensitivity = sensitivity; }
+    float getMouseSensitivity() const { return _mouseSensitivity; }
+    
     const Matrix4x4& getViewMatrix() const;
     const Matrix4x4& getProjectionMatrix() const;
     Matrix4x4 getViewProjectionMatrix() const;
@@ -45,6 +56,9 @@ private:
     Vector3f _position;
     Vector3f _target;
     Vector3f _up;
+    Vector3f _rotation;
+    
+    float _mouseSensitivity;
     
     mutable Matrix4x4 _viewMatrix;
     mutable Matrix4x4 _projectionMatrix;

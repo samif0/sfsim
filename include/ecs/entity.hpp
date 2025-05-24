@@ -16,6 +16,14 @@ public:
     Entity(EntityID id);
     ~Entity();
     
+    // Delete copy constructor and copy assignment operator
+    Entity(const Entity&) = delete;
+    Entity& operator=(const Entity&) = delete;
+    
+    // Allow move constructor and move assignment operator
+    Entity(Entity&&) = default;
+    Entity& operator=(Entity&&) = default;
+    
     EntityID getId() const { return _id; }
     
     template<typename T, typename... Args>
@@ -86,9 +94,34 @@ public:
     void setName(const std::string& name) { _name = name; }
     const std::string& getName() const { return _name; }
     
+    // Support for custom components using ComponentType enum
+    void addCustomComponent(std::unique_ptr<Component> component) {
+        component->_entity = this;
+        _customComponents.push_back(std::move(component));
+    }
+    
+    Component* getComponent(ComponentType type) {
+        for (auto& comp : _customComponents) {
+            if (comp->getComponentType() == type) {
+                return comp.get();
+            }
+        }
+        return nullptr;
+    }
+    
+    const Component* getComponent(ComponentType type) const {
+        for (const auto& comp : _customComponents) {
+            if (comp->getComponentType() == type) {
+                return comp.get();
+            }
+        }
+        return nullptr;
+    }
+    
 private:
     EntityID _id;
     std::unordered_map<std::type_index, std::unique_ptr<Component>> _components;
+    std::vector<std::unique_ptr<Component>> _customComponents;
     bool _active;
     std::string _name;
 };

@@ -11,6 +11,8 @@ public:
     TransformComponent();
     TransformComponent(const Vector3f& position, const Vector3f& rotation = Vector3f::zero(), const Vector3f& scale = Vector3f::one());
     
+    ComponentType getComponentType() const override { return ComponentType::Transform; }
+    
     Transform& getTransform() { return _transform; }
     const Transform& getTransform() const { return _transform; }
     

@@ -8,12 +8,19 @@ namespace ECS {
 
 class Entity;
 
+enum class ComponentType {
+    Transform,
+    Render,
+    Custom
+};
+
 class Component {
 public:
     Component() = default;
     virtual ~Component() = default;
     
     virtual std::type_index getType() const = 0;
+    virtual ComponentType getComponentType() const = 0;
     
     Entity* getEntity() const { return _entity; }
     
