@@ -1,73 +1,32 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <mesh.hpp>
-#include <point3d.hpp>
-#include <sim.hpp>
-#include <simobj/entity.hpp>
-#include <triangle.hpp>
+
+namespace SimpleExamples {
+    void runExample(int choice);
+}
 
 int main() {
-    sim_config cfg{sf::String("sfsim"), 800, 600};
-    sim s{&cfg};
-    triangle st0({sf::Vector3f(0.0f, 0.0f, 0.0f), sf::Vector3f(0.0f, 1.0f, 0.0f),
-                  sf::Vector3f(1.0f, 1.0f, 0.0f)});
-    triangle st1({sf::Vector3f(0.0f, 0.0f, 0.0f), sf::Vector3f(1.0f, 1.0f, 0.0f),
-                  sf::Vector3f(1.0f, 0.0f, 0.0f)});
-
-    triangle et0({sf::Vector3f(1.0f, 0.0f, 0.0f), sf::Vector3f(1.0f, 1.0f, 0.0f),
-                  sf::Vector3f(1.0f, 1.0f, 1.0f)});
-    triangle et1({sf::Vector3f(1.0f, 0.0f, 0.0f), sf::Vector3f(1.0f, 1.0f, 1.0f),
-                  sf::Vector3f(1.0f, 0.0f, 1.0f)});
-
-    triangle nt0({sf::Vector3f(1.0f, 0.0f, 1.0f), sf::Vector3f(1.0f, 1.0f, 1.0f),
-                  sf::Vector3f(0.0f, 1.0f, 1.0f)});
-    triangle nt1({sf::Vector3f(1.0f, 0.0f, 1.0f), sf::Vector3f(0.0f, 1.0f, 1.0f),
-                  sf::Vector3f(0.0f, 0.0f, 1.0f)});
-
-    triangle wt0({sf::Vector3f(0.0f, 0.0f, 1.0f), sf::Vector3f(0.0f, 1.0f, 1.0f),
-                  sf::Vector3f(0.0f, 1.0f, 0.0f)});
-    triangle wt1({sf::Vector3f(0.0f, 0.0f, 1.0f), sf::Vector3f(0.0f, 1.0f, 0.0f),
-                  sf::Vector3f(0.0f, 0.0f, 0.0f)});
-
-    triangle tt0({sf::Vector3f(0.0f, 1.0f, 0.0f), sf::Vector3f(0.0f, 1.0f, 1.0f),
-                  sf::Vector3f(1.0f, 1.0f, 1.0f)});
-    triangle tt1({sf::Vector3f(0.0f, 1.0f, 0.0f), sf::Vector3f(1.0f, 1.0f, 1.0f),
-                  sf::Vector3f(1.0f, 1.0f, 0.0f)});
-
-    triangle bt0({sf::Vector3f(1.0f, 0.0f, 1.0f), sf::Vector3f(0.0f, 0.0f, 1.0f),
-                  sf::Vector3f(0.0f, 0.0f, 0.0f)});
-    triangle bt1({sf::Vector3f(1.0f, 0.0f, 1.0f), sf::Vector3f(0.0f, 0.0f, 0.0f),
-                  sf::Vector3f(1.0f, 0.0f, 0.0f)});
-
-    std::vector<triangle> cube{
-        st0, st1, et0, et1, nt0, nt1, wt0, wt1, tt0, tt1, bt0, bt1,
-    };
-
-    mesh cube_mesh(cube);
-
-    point3d p0(sf::Vector3f{0, 0, 0});
-    point3d p1(sf::Vector3f{0, 1, 0});
-    point3d p2(sf::Vector3f{0, 0, 1});
-    point3d p3(sf::Vector3f{0, 1, 1});
-    point3d p4(sf::Vector3f{1, 0, 0});
-    point3d p5(sf::Vector3f{1, 0, 1});
-    point3d p6(sf::Vector3f{1, 1, 0});
-    point3d p7(sf::Vector3f{1, 1, 1});
-
-    mesh g{};
-    // g.to_grid(5, 5, 5, 1, true);
-
-    std::vector<mesh> meshes{g};
-    std::vector<point3d> free_points{p0, p1, p2, p3, p4, p5, p6, p7};
-    std::vector<point3d> free_points2{};
-
-    triangle t1({sf::Vector3f(0.0f, 0.0f, 0.0f), sf::Vector3f(2.0f, 0.0f, 0.0f),
-                 sf::Vector3f(2.0f, 2.0f, 0.0f)});
-
-    std::vector<triangle*> tris{&t1};
-    entity e(tris);
-    s.init(meshes, free_points2);
-    s.add_entity(e);
-
-    s.start();
+    std::cout << "SFSim - Select an example to run:" << std::endl;
+    std::cout << "1. DNA Helix (rotating double helix structure)" << std::endl;
+    std::cout << "2. Particle System (bouncing particles)" << std::endl;
+    std::cout << "3. Mandala (geometric mandala pattern)" << std::endl;
+    std::cout << "Enter choice (1-3, default=1): ";
+    
+    int choice = 1;
+    std::string input;
+    std::getline(std::cin, input);
+    
+    if (!input.empty()) {
+        try {
+            choice = std::stoi(input);
+            if (choice < 1 || choice > 3) {
+                choice = 1;
+            }
+        } catch (const std::exception&) {
+            choice = 1;
+        }
+    }
+    
+    SimpleExamples::runExample(choice);
+    return 0;
 }

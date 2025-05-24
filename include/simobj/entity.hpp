@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
 
 #include "../drawable.hpp"
 #include "../point3d.hpp"

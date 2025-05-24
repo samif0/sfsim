@@ -37,7 +37,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+# Simple examples build
+set(SOURCES 
+    ${PROJECT_SOURCE_DIR}/src/main.cpp
+    ${PROJECT_SOURCE_DIR}/src/simple_examples.cpp
+)
 
 add_executable(sfsim ${SOURCES})
 
