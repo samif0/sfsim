@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <typeindex>
+#include <string>
 
 namespace SFSim {
 namespace ECS {
